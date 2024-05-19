@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ChangeMaterial : MonoBehaviour, IPointerEnterHandler  , IPointerExitHandler
+public class ChangeMaterial : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     public Material highlightedMaterial;
     public Material defaultMaterial;
@@ -21,4 +21,10 @@ public class ChangeMaterial : MonoBehaviour, IPointerEnterHandler  , IPointerExi
     {
         rend.material = defaultMaterial;
     }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        UIManager.Instance.title.text = name;
+    }
+
 }
