@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8f6ebd52bbacd479831c3322ddb38d, type: 3}
+  m_Name: "Ventr\xEDculo Derecho"
+  m_EditorClassIdentifier: 
+  fastFillData:
+    phase: 0
+    atrialPression: 
+    ventricularVolume: 70-80 ml
+    ventricularInitialPression: 5-10 mmHg
+    ventricularFinalPression: 8-12 mmHg
+  slowFillData:
+    phase: 1
+    atrialPression: 
+    ventricularVolume: 40-50 ml
+    ventricularInitialPression: 10-12 mmHg
+    ventricularFinalPression: 10-15 mmHg
+  finalFillData:
+    phase: 0
+    atrialPression: 
+    ventricularVolume: 110-120 ml
+    ventricularInitialPression: 10-15 mmHg
+    ventricularFinalPression: 

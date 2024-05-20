@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : SinglentonParent<UIManager>
 {
     [SerializeField] public TextMeshProUGUI title;
+    public HeartSpace selectedHeartSpace;
 
     [Header("Entrys")]
     public Slider age;
@@ -20,20 +21,24 @@ public class UIManager : SinglentonParent<UIManager>
     public GameObject alertObese;
     public GameObject alertCardiacIllness;
 
+    [Header("Phases")]
+    public TMP_Dropdown phase;
+    public TextMeshProUGUI atrialPression;
+    public TextMeshProUGUI ventricularVolume;
+    public TextMeshProUGUI ventricularInitialPression;
+    public TextMeshProUGUI ventricularFinalPression;
+    public TextMeshProUGUI phaseVolume;
+
     // Start is called before the first frame update
     void Start()
     {
         age.onValueChanged.AddListener(delegate { CheckElderAlert(); });
         weight.onValueChanged.AddListener(delegate { CheckObeseAlert(); });
         cardiacIllnessHistory.onValueChanged.AddListener(delegate { CheckCardiacIllnessAlert(); });
+        phase.onValueChanged.AddListener(delegate { CheckPhase(); });
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    #region Alerts
 
     void CheckElderAlert()
     {
@@ -73,4 +78,106 @@ public class UIManager : SinglentonParent<UIManager>
     {
         alert.SetActive(enable);
     }
+
+    #endregion
+
+    #region Phases
+
+    public void EnablePhasesData()
+    {
+        phase.gameObject.SetActive(true);
+        phaseVolume.transform.parent.gameObject.SetActive(true);
+    }   
+
+    public void CheckPhase()
+    {
+        if(selectedHeartSpace == null)
+        {
+            return;
+        }
+
+        Phase phaseName = phase.value switch
+        {
+            0 => Phase.fastFill,
+            1 => Phase.slowFill,
+            2 => Phase.finalFill,
+            _ => Phase.finalFill
+        };;;
+
+        if (phaseName == Phase.fastFill)
+        {
+            if (!String.IsNullOrEmpty(selectedHeartSpace.fastFillData.atrialPression))
+            {
+                atrialPression.text = selectedHeartSpace.fastFillData.atrialPression;
+                atrialPression.transform.parent.gameObject.SetActive(true);
+                ventricularVolume.transform.parent.gameObject.SetActive(false);
+                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
+                ventricularFinalPression.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                atrialPression.transform.parent.gameObject.SetActive(false);
+                ventricularVolume.text =  selectedHeartSpace.fastFillData.ventricularVolume;
+                ventricularInitialPression.text = selectedHeartSpace.fastFillData.ventricularInitialPression;
+                ventricularFinalPression.text = selectedHeartSpace.fastFillData.ventricularFinalPression;
+                ventricularVolume.transform.parent.gameObject.SetActive(true);
+                ventricularInitialPression.transform.parent.gameObject.SetActive(true);
+                ventricularFinalPression.transform.parent.gameObject.SetActive(true);
+            }
+            phaseVolume.text = "30-40 %";
+        }
+        else if (phaseName == Phase.slowFill)
+        {
+            if (!String.IsNullOrEmpty(selectedHeartSpace.slowFillData.atrialPression))
+            {
+                atrialPression.text = selectedHeartSpace.slowFillData.atrialPression;
+                atrialPression.transform.parent.gameObject.SetActive(true);
+                ventricularVolume.transform.parent.gameObject.SetActive(false);
+                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
+                ventricularFinalPression.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                atrialPression.transform.parent.gameObject.SetActive(false);
+                ventricularVolume.text = selectedHeartSpace.slowFillData.ventricularVolume;
+                ventricularInitialPression.text = selectedHeartSpace.slowFillData.ventricularInitialPression;
+                ventricularFinalPression.text = selectedHeartSpace.slowFillData.ventricularFinalPression;
+                ventricularVolume.transform.parent.gameObject.SetActive(true);
+                ventricularInitialPression.transform.parent.gameObject.SetActive(true);
+                ventricularFinalPression.transform.parent.gameObject.SetActive(true);
+            }
+            phaseVolume.text = "60 - 80%";
+        }
+        else if (phaseName == Phase.finalFill)
+        {
+            if (!String.IsNullOrEmpty(selectedHeartSpace.finalFillData.atrialPression))
+            {
+                atrialPression.text = selectedHeartSpace.finalFillData.atrialPression;
+                atrialPression.transform.parent.gameObject.SetActive(true);
+                ventricularVolume.transform.parent.gameObject.SetActive(false);
+                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
+                ventricularFinalPression.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                atrialPression.transform.parent.gameObject.SetActive(false);
+                ventricularVolume.text = selectedHeartSpace.finalFillData.ventricularVolume;
+                ventricularInitialPression.text = selectedHeartSpace.finalFillData.ventricularInitialPression;
+                ventricularFinalPression.text = selectedHeartSpace.finalFillData.ventricularFinalPression;
+                ventricularVolume.transform.parent.gameObject.SetActive(true);
+                ventricularInitialPression.transform.parent.gameObject.SetActive(true);
+                ventricularFinalPression.transform.parent.gameObject.SetActive(true);
+            }
+            phaseVolume.text = "100%";
+        }   
+    }
+
+    #endregion
+}
+
+public enum Phase
+{
+    fastFill =0,
+    slowFill =1,
+    finalFill =2,
 }
