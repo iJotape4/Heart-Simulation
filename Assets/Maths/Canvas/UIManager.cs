@@ -200,7 +200,7 @@ public class UIManager : SinglentonParent<UIManager>
 
     void CalculateCardiacIndex()
     {
-        float IC = UtilFormulas.CardiacIndex(FCM.value, float.Parse(bodySurface.text));
+        float IC = UtilFormulas.CardiacIndex(float.Parse(cardiacOutput.text), float.Parse(bodySurface.text));
         cardiacIndex.text = IC.ToString();
     }
     #endregion

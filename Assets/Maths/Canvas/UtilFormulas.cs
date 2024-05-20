@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class UtilFormulas 
 {
-    static int systolicVolume = 70;
+    static float systolicVolume = 70f;
    public static float CalculateIMC(float weight, float height)
    {
        height /= 100;
@@ -37,7 +37,7 @@ public class UtilFormulas
 
     public static float CardiacSpent(float cardiacFrequency)
     {
-        float GC=  cardiacFrequency * systolicVolume;
+        float GC=  cardiacFrequency * (systolicVolume /1000);
         return GC;
     }
 
