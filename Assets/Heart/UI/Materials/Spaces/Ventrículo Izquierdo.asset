@@ -14,19 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fastFillData:
     phase: 0
-    atrialPression: 
-    ventricularVolume: 25-30 ml
-    ventricularInitialPression: 5-10 mmHg
-    ventricularFinalPression: 8-12 mmHg
+    atrialPressionMin: 
+    atrialPressionMax: 
+    ventricularVolumeMin: 25
+    ventricularVolumeMax: 30
+    ventricularInitialPressionMin: 5
+    ventricularInitialPressionMax: 10
+    ventricularFinalPressionMin: 8
+    ventricularFinalPressionMax: 12
   slowFillData:
     phase: 1
-    atrialPression: 
-    ventricularVolume: 15-20 ml
-    ventricularInitialPression: 10-12 mmHg
-    ventricularFinalPression: 8-12 mmHg
+    atrialPressionMin: 
+    atrialPressionMax: 
+    ventricularVolumeMin: 15
+    ventricularVolumeMax: 20
+    ventricularInitialPressionMin: 10
+    ventricularInitialPressionMax: 12
+    ventricularFinalPressionMin: 10
+    ventricularFinalPressionMax: 15
   finalFillData:
     phase: 0
-    atrialPression: 
-    ventricularVolume: 50-60 ml
-    ventricularInitialPression: 
-    ventricularFinalPression: 10-15 mmHg
+    atrialPressionMin: 
+    atrialPressionMax: 
+    ventricularVolumeMin: 50
+    ventricularVolumeMax: 60
+    ventricularInitialPressionMin: 
+    ventricularInitialPressionMax: 
+    ventricularFinalPressionMin: 10
+    ventricularFinalPressionMax: 15

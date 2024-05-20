@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,11 +22,11 @@ public class UIManager : SinglentonParent<UIManager>
 
     [Header("Phases")]
     public TMP_Dropdown phase;
-    public TextMeshProUGUI atrialPression;
-    public TextMeshProUGUI ventricularVolume;
-    public TextMeshProUGUI ventricularInitialPression;
-    public TextMeshProUGUI ventricularFinalPression;
-    public TextMeshProUGUI phaseVolume;
+    public Slider atrialPression;
+    public Slider ventricularVolume;
+    public Slider ventricularInitialPression;
+    public Slider ventricularFinalPression;
+    public Slider phaseVolume;
 
     [Header("OutputData")]
     public TextMeshProUGUI bodySurface;
@@ -117,70 +116,103 @@ public class UIManager : SinglentonParent<UIManager>
 
         if (phaseName == Phase.fastFill)
         {
-            if (!String.IsNullOrEmpty(selectedHeartSpace.fastFillData.atrialPression))
-            {
-                atrialPression.text = selectedHeartSpace.fastFillData.atrialPression;
-                atrialPression.transform.parent.gameObject.SetActive(true);
-                ventricularVolume.transform.parent.gameObject.SetActive(false);
-                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
-                ventricularFinalPression.transform.parent.gameObject.SetActive(false);
-            }
-            else
-            {
-                atrialPression.transform.parent.gameObject.SetActive(false);
-                ventricularVolume.text =  selectedHeartSpace.fastFillData.ventricularVolume;
-                ventricularInitialPression.text = selectedHeartSpace.fastFillData.ventricularInitialPression;
-                ventricularFinalPression.text = selectedHeartSpace.fastFillData.ventricularFinalPression;
-                ventricularVolume.transform.parent.gameObject.SetActive(true);
-                ventricularInitialPression.transform.parent.gameObject.SetActive(true);
-                ventricularFinalPression.transform.parent.gameObject.SetActive(true);
-            }
-            phaseVolume.text = "30-40 %";
+            FastFill();
         }
         else if (phaseName == Phase.slowFill)
         {
-            if (!String.IsNullOrEmpty(selectedHeartSpace.slowFillData.atrialPression))
-            {
-                atrialPression.text = selectedHeartSpace.slowFillData.atrialPression;
-                atrialPression.transform.parent.gameObject.SetActive(true);
-                ventricularVolume.transform.parent.gameObject.SetActive(false);
-                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
-                ventricularFinalPression.transform.parent.gameObject.SetActive(false);
-            }
-            else
-            {
-                atrialPression.transform.parent.gameObject.SetActive(false);
-                ventricularVolume.text = selectedHeartSpace.slowFillData.ventricularVolume;
-                ventricularInitialPression.text = selectedHeartSpace.slowFillData.ventricularInitialPression;
-                ventricularFinalPression.text = selectedHeartSpace.slowFillData.ventricularFinalPression;
-                ventricularVolume.transform.parent.gameObject.SetActive(true);
-                ventricularInitialPression.transform.parent.gameObject.SetActive(true);
-                ventricularFinalPression.transform.parent.gameObject.SetActive(true);
-            }
-            phaseVolume.text = "60 - 80%";
+            SlowFill();
         }
         else if (phaseName == Phase.finalFill)
         {
-            if (!String.IsNullOrEmpty(selectedHeartSpace.finalFillData.atrialPression))
-            {
-                atrialPression.text = selectedHeartSpace.finalFillData.atrialPression;
-                atrialPression.transform.parent.gameObject.SetActive(true);
-                ventricularVolume.transform.parent.gameObject.SetActive(false);
-                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
-                ventricularFinalPression.transform.parent.gameObject.SetActive(false);
-            }
-            else
-            {
-                atrialPression.transform.parent.gameObject.SetActive(false);
-                ventricularVolume.text = selectedHeartSpace.finalFillData.ventricularVolume;
-                ventricularInitialPression.text = selectedHeartSpace.finalFillData.ventricularInitialPression;
-                ventricularFinalPression.text = selectedHeartSpace.finalFillData.ventricularFinalPression;
-                ventricularVolume.transform.parent.gameObject.SetActive(true);
-                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
-                ventricularFinalPression.transform.parent.gameObject.SetActive(true);
-            }
-            phaseVolume.text = "100%";
-        }   
+            FinalFill();
+        }
+    }
+
+    private void FinalFill()
+    {
+        if (selectedHeartSpace.finalFillData.atrialPressionMin !=0)
+        {
+            atrialPression.minValue = selectedHeartSpace.finalFillData.atrialPressionMin;
+            atrialPression.maxValue = selectedHeartSpace.finalFillData.atrialPressionMax;
+
+            atrialPression.transform.parent.gameObject.SetActive(true);
+            ventricularVolume.transform.parent.gameObject.SetActive(false);
+            ventricularInitialPression.transform.parent.gameObject.SetActive(false);
+            ventricularFinalPression.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {           
+            ventricularVolume.minValue = selectedHeartSpace.finalFillData.ventricularVolumeMin;
+            ventricularVolume.maxValue = selectedHeartSpace.finalFillData.ventricularVolumeMax;
+            ventricularInitialPression.minValue = selectedHeartSpace.finalFillData.ventricularVolumeMin;
+            ventricularInitialPression.maxValue = selectedHeartSpace.finalFillData.ventricularVolumeMax;
+            ventricularFinalPression.minValue = selectedHeartSpace.finalFillData.ventricularVolumeMin;
+            ventricularFinalPression.maxValue = selectedHeartSpace.finalFillData.ventricularVolumeMax;
+
+            atrialPression.transform.parent.gameObject.SetActive(false);
+            ventricularVolume.transform.parent.gameObject.SetActive(true);
+            ventricularInitialPression.transform.parent.gameObject.SetActive(false);
+            ventricularFinalPression.transform.parent.gameObject.SetActive(true);
+        }
+        phaseVolume.minValue = 100f;
+        phaseVolume.maxValue = 100f;
+    }
+
+    private void SlowFill()
+    {
+        if (selectedHeartSpace.slowFillData.atrialPressionMin != 0)
+        {
+            atrialPression.minValue = selectedHeartSpace.slowFillData.atrialPressionMin;
+            atrialPression.maxValue = selectedHeartSpace.slowFillData.atrialPressionMax;
+            atrialPression.transform.parent.gameObject.SetActive(true);
+            ventricularVolume.transform.parent.gameObject.SetActive(false);
+            ventricularInitialPression.transform.parent.gameObject.SetActive(false);
+            ventricularFinalPression.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            ventricularVolume.minValue = selectedHeartSpace.slowFillData.ventricularVolumeMin;
+            ventricularVolume.maxValue = selectedHeartSpace.slowFillData.ventricularVolumeMax;
+            ventricularInitialPression.minValue = selectedHeartSpace.slowFillData.ventricularVolumeMin;
+            ventricularInitialPression.maxValue = selectedHeartSpace.slowFillData.ventricularVolumeMax;
+            ventricularFinalPression.minValue = selectedHeartSpace.slowFillData.ventricularVolumeMin;
+            ventricularFinalPression.maxValue = selectedHeartSpace.slowFillData.ventricularVolumeMax;
+
+            atrialPression.transform.parent.gameObject.SetActive(false);
+            ventricularVolume.transform.parent.gameObject.SetActive(true);
+            ventricularInitialPression.transform.parent.gameObject.SetActive(true);
+            ventricularFinalPression.transform.parent.gameObject.SetActive(true);
+        }
+        phaseVolume.minValue = 60f;
+        phaseVolume.maxValue = 80f;
+    }
+
+    private void FastFill()
+    {
+        if (selectedHeartSpace.fastFillData.atrialPressionMin != 0)
+        {
+            atrialPression.minValue = selectedHeartSpace.fastFillData.atrialPressionMin;
+            atrialPression.maxValue = selectedHeartSpace.fastFillData.atrialPressionMax;
+            atrialPression.transform.parent.gameObject.SetActive(true);
+            ventricularVolume.transform.parent.gameObject.SetActive(false);
+            ventricularInitialPression.transform.parent.gameObject.SetActive(false);
+            ventricularFinalPression.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            ventricularVolume.minValue = selectedHeartSpace.fastFillData.ventricularVolumeMin;
+            ventricularVolume.maxValue = selectedHeartSpace.fastFillData.ventricularVolumeMax;
+            ventricularInitialPression.minValue = selectedHeartSpace.fastFillData.ventricularVolumeMin;
+            ventricularInitialPression.maxValue = selectedHeartSpace.fastFillData.ventricularVolumeMax;
+            ventricularFinalPression.minValue = selectedHeartSpace.fastFillData.ventricularVolumeMin;
+            ventricularFinalPression.maxValue = selectedHeartSpace.fastFillData.ventricularVolumeMax;
+            atrialPression.transform.parent.gameObject.SetActive(false);
+            ventricularVolume.transform.parent.gameObject.SetActive(true);
+            ventricularInitialPression.transform.parent.gameObject.SetActive(true);
+            ventricularFinalPression.transform.parent.gameObject.SetActive(true);
+        }
+        phaseVolume.minValue = 30;
+        phaseVolume.maxValue = 40;
     }
 
     #endregion

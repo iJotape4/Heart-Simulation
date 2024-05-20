@@ -12,8 +12,12 @@ public class HeartSpace : ScriptableObject
 public struct HeartSpaceData
 {
     public Phase phase;
-    public string atrialPression;
-    public string ventricularVolume;
-    public string ventricularInitialPression;
-    public string ventricularFinalPression;
+    public float atrialPressionMin;
+    public float atrialPressionMax;
+    public float ventricularVolumeMin;
+    public float ventricularVolumeMax;
+    public float ventricularInitialPressionMin;
+    public float ventricularInitialPressionMax;
+    public float ventricularFinalPressionMin;
+    public float ventricularFinalPressionMax;
 }
