@@ -28,5 +28,5 @@ MonoBehaviour:
     phase: 0
     atrialPression: 
     ventricularVolume: 50-60 ml
-    ventricularInitialPression: 10-15 mmHg
-    ventricularFinalPression: 
+    ventricularInitialPression: 
+    ventricularFinalPression: 10-15 mmHg

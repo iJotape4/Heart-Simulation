@@ -176,7 +176,7 @@ public class UIManager : SinglentonParent<UIManager>
                 ventricularInitialPression.text = selectedHeartSpace.finalFillData.ventricularInitialPression;
                 ventricularFinalPression.text = selectedHeartSpace.finalFillData.ventricularFinalPression;
                 ventricularVolume.transform.parent.gameObject.SetActive(true);
-                ventricularInitialPression.transform.parent.gameObject.SetActive(true);
+                ventricularInitialPression.transform.parent.gameObject.SetActive(false);
                 ventricularFinalPression.transform.parent.gameObject.SetActive(true);
             }
             phaseVolume.text = "100%";
