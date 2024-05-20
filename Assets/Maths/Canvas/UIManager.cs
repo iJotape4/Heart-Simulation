@@ -154,7 +154,7 @@ public class UIManager : SinglentonParent<UIManager>
             ventricularInitialPression.transform.parent.gameObject.SetActive(false);
             ventricularFinalPression.transform.parent.gameObject.SetActive(true);
         }
-        phaseVolume.minValue = 100f;
+        phaseVolume.minValue = 80f;
         phaseVolume.maxValue = 100f;
     }
 
