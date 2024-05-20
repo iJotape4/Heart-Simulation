@@ -29,13 +29,24 @@ public class UIManager : SinglentonParent<UIManager>
     public TextMeshProUGUI ventricularFinalPression;
     public TextMeshProUGUI phaseVolume;
 
+    [Header("OutputData")]
+    public TextMeshProUGUI bodySurface;
+    public TextMeshProUGUI cardiacOutput;
+    public TextMeshProUGUI cardiacIndex;
+
     // Start is called before the first frame update
     void Start()
     {
         age.onValueChanged.AddListener(delegate { CheckElderAlert(); });
-        weight.onValueChanged.AddListener(delegate { CheckObeseAlert(); });
+        weight.onValueChanged.AddListener(delegate { CheckObeseAlert(); CalculateBodySurface(); CalculateCardiacSpent(); CalculateCardiacIndex(); });
+        height.onValueChanged.AddListener(delegate { CalculateBodySurface(); CalculateCardiacSpent(); CalculateCardiacIndex(); });
         cardiacIllnessHistory.onValueChanged.AddListener(delegate { CheckCardiacIllnessAlert(); });
+        FCM.onValueChanged.AddListener(delegate { CalculateCardiacSpent(); CalculateCardiacIndex(); });
         phase.onValueChanged.AddListener(delegate { CheckPhase(); });
+
+        CalculateBodySurface();
+        CalculateCardiacSpent();
+        CalculateCardiacIndex();
     }
 
     #region Alerts
@@ -172,6 +183,26 @@ public class UIManager : SinglentonParent<UIManager>
         }   
     }
 
+    #endregion
+
+    #region outputData
+    void CalculateBodySurface()
+    {
+       float SC=  UtilFormulas.BodySurface((int)weight.value, (int)height.value);
+       bodySurface.text = SC.ToString();
+    }
+
+    void CalculateCardiacSpent()
+    {
+        float GC = UtilFormulas.CardiacSpent(FCM.value);
+        cardiacOutput.text = GC.ToString();
+    } 
+
+    void CalculateCardiacIndex()
+    {
+        float IC = UtilFormulas.CardiacIndex(FCM.value, float.Parse(bodySurface.text));
+        cardiacIndex.text = IC.ToString();
+    }
     #endregion
 }
 
