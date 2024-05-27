@@ -14,7 +14,5 @@ public class HeartAnimationSpeed : MonoBehaviour
     {
        float speed = (1f/60f) * FCM;
         animator.speed = speed;
-
-        Debug.Log("Speed: " + speed);
     }
 }

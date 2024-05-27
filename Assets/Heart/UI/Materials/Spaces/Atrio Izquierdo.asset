@@ -12,33 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8f6ebd52bbacd479831c3322ddb38d, type: 3}
   m_Name: Atrio Izquierdo
   m_EditorClassIdentifier: 
+  heartSpaceName: LeftAtrius
   fastFillData:
     phase: 0
     atrialPressionMin: 5
     atrialPressionMax: 10
-    ventricularVolumeMin: 
-    ventricularVolumeMax: 
-    ventricularInitialPressionMin: 
-    ventricularInitialPressionMax: 
-    ventricularFinalPressionMin: 
-    ventricularFinalPressionMax: 
+    ventricularVolumeMin: 0
+    ventricularVolumeMax: 0
+    ventricularInitialPressionMin: 0
+    ventricularInitialPressionMax: 0
+    ventricularFinalPressionMin: 0
+    ventricularFinalPressionMax: 0
   slowFillData:
     phase: 1
     atrialPressionMin: 8
     atrialPressionMax: 12
-    ventricularVolumeMin: 
-    ventricularVolumeMax: 
-    ventricularInitialPressionMin: 
-    ventricularInitialPressionMax: 
-    ventricularFinalPressionMin: 
-    ventricularFinalPressionMax: 
+    ventricularVolumeMin: 0
+    ventricularVolumeMax: 0
+    ventricularInitialPressionMin: 0
+    ventricularInitialPressionMax: 0
+    ventricularFinalPressionMin: 0
+    ventricularFinalPressionMax: 0
   finalFillData:
     phase: 0
     atrialPressionMin: 2
     atrialPressionMax: 6
-    ventricularVolumeMin: 
-    ventricularVolumeMax: 
-    ventricularInitialPressionMin: 
-    ventricularInitialPressionMax: 
-    ventricularFinalPressionMin: 
-    ventricularFinalPressionMax: 
+    ventricularVolumeMin: 0
+    ventricularVolumeMax: 0
+    ventricularInitialPressionMin: 0
+    ventricularInitialPressionMax: 0
+    ventricularFinalPressionMin: 0
+    ventricularFinalPressionMax: 0

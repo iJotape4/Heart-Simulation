@@ -42,4 +42,14 @@ public class UtilFormulas
         float IC = cardiacSpent / bodySurface;
         return IC;
     }
+
+    public static float ArterialPression()
+    {
+        return 1;
+    }
+
+    public static float VentricularVolume()
+    {
+        return 1;
+    }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/HeartSpace", order = 1)]
 public class HeartSpace : ScriptableObject
 {
+   public string heartSpaceName;
    public HeartSpaceData fastFillData;
    public HeartSpaceData slowFillData;
    public HeartSpaceData finalFillData;

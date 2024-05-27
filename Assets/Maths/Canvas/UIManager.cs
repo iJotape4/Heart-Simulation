@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +14,8 @@ public class UIManager : SinglentonParent<UIManager>
     public Slider weight;
     public Slider FCM;
     public Toggle cardiacIllnessHistory;
+    public Slider bloodInitialVolume;
+    [Range(0.1f,3f)] public float bloodMultiplier = 0.9f;
 
     [Header("Alerts")]
     public GameObject alertElder;
@@ -27,11 +29,14 @@ public class UIManager : SinglentonParent<UIManager>
     public Slider ventricularInitialPression;
     public Slider ventricularFinalPression;
     public Slider phaseVolume;
+    public Coroutine valvesRoutine;
+    public HeartSide selectedSide;
 
     [Header("OutputData")]
     public TextMeshProUGUI bodySurface;
     public TextMeshProUGUI cardiacOutput;
     public TextMeshProUGUI cardiacIndex;
+    public TextMeshProUGUI arterialPression;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +47,7 @@ public class UIManager : SinglentonParent<UIManager>
         cardiacIllnessHistory.onValueChanged.AddListener(delegate { CheckCardiacIllnessAlert(); });
         FCM.onValueChanged.AddListener(delegate { CalculateCardiacSpent(); CalculateCardiacIndex(); });
         phase.onValueChanged.AddListener(delegate { CheckPhase(); });
+        bloodInitialVolume.onValueChanged.AddListener(delegate { CalculateAtrialPression(); });
 
         CalculateBodySurface();
         CalculateCardiacSpent();
@@ -97,11 +103,13 @@ public class UIManager : SinglentonParent<UIManager>
     {
         phase.gameObject.SetActive(true);
         phaseVolume.transform.parent.gameObject.SetActive(true);
-    }   
+    }
 
     public void CheckPhase()
     {
-        if(selectedHeartSpace == null)
+        CheckIfSideChangedAndStopSimulation();
+
+        if (selectedHeartSpace == null)
         {
             return;
         }
@@ -112,7 +120,7 @@ public class UIManager : SinglentonParent<UIManager>
             1 => Phase.slowFill,
             2 => Phase.finalFill,
             _ => Phase.finalFill
-        };;;
+        }; ; ;
 
         if (phaseName == Phase.fastFill)
         {
@@ -235,6 +243,61 @@ public class UIManager : SinglentonParent<UIManager>
         float IC = UtilFormulas.CardiacIndex(float.Parse(cardiacOutput.text), float.Parse(bodySurface.text));
         cardiacIndex.text = IC.ToString();
     }
+
+    void CalculateAtrialPression()
+    {
+        atrialPression.value = bloodInitialVolume.value*bloodMultiplier;
+        if(atrialPression.value >= atrialPression.maxValue)
+        {
+            valvesRoutine =  StartCoroutine( OpenValves());
+        }
+    }
+
+    IEnumerator OpenValves()    
+    {
+        while(atrialPression.value >= atrialPression.minValue)
+        {
+            yield return new WaitForSeconds(0.01f);
+            atrialPression.value -= 1f;
+            ventricularVolume.value += 1f;
+            Debug.Log("AtrialPression: "+atrialPression.value);
+        }
+
+        while(ventricularVolume.value >= ventricularVolume.minValue)
+        {
+            yield return new WaitForSeconds(0.01f);
+            ventricularVolume.value -= 1f;
+            Debug.Log("VentricularVolume: "+ventricularVolume.value);
+        }
+    }
+
+    void CalculateSystolicVolume()
+    {
+
+    }
+
+    HeartSide SetSelectedSide(HeartSpace space)
+    {
+        HeartSide sideName = space.heartSpaceName switch
+        {
+           "RightAtrius" => HeartSide.right,
+           "RightVentricle" => HeartSide.right,
+           "LeftAtrius" => HeartSide.left,
+           "LeftVentricle" => HeartSide.left,
+           _=> HeartSide.left
+        }; 
+        return sideName;
+    }
+
+     public void CheckIfSideChangedAndStopSimulation()
+    {
+        HeartSide newSide =  SetSelectedSide(selectedHeartSpace);
+        if(selectedSide != HeartSide.none  && newSide != selectedSide && valvesRoutine!=null)
+        {
+            StopCoroutine(valvesRoutine);
+        }
+        selectedSide = newSide;      
+    }
     #endregion
 }
 
@@ -243,4 +306,11 @@ public enum Phase
     fastFill =0,
     slowFill =1,
     finalFill =2,
+}
+
+public enum HeartSide 
+{   
+    none =0,
+    left,
+    right
 }
