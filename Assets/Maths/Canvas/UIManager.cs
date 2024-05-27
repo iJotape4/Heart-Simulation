@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +13,7 @@ public class UIManager : SinglentonParent<UIManager>
     public Slider weight;
     public Slider FCM;
     public Toggle cardiacIllnessHistory;
+    public Slider aorticPression_Max;
 
     [Header("Alerts")]
     public GameObject alertElder;
@@ -32,6 +32,8 @@ public class UIManager : SinglentonParent<UIManager>
     public TextMeshProUGUI bodySurface;
     public TextMeshProUGUI cardiacOutput;
     public TextMeshProUGUI cardiacIndex;
+    public TextMeshProUGUI aorticPression;
+    public TextMeshProUGUI cardiacNoises;
 
     // Start is called before the first frame update
     void Start()
@@ -40,12 +42,14 @@ public class UIManager : SinglentonParent<UIManager>
         weight.onValueChanged.AddListener(delegate { CheckObeseAlert(); CalculateBodySurface(); CalculateCardiacSpent(); CalculateCardiacIndex(); });
         height.onValueChanged.AddListener(delegate { CalculateBodySurface(); CalculateCardiacSpent(); CalculateCardiacIndex(); });
         cardiacIllnessHistory.onValueChanged.AddListener(delegate { CheckCardiacIllnessAlert(); });
-        FCM.onValueChanged.AddListener(delegate { CalculateCardiacSpent(); CalculateCardiacIndex(); });
-        phase.onValueChanged.AddListener(delegate { CheckPhase(); });
+        FCM.onValueChanged.AddListener(delegate { CalculateCardiacSpent(); CalculateCardiacIndex(); CalculateAorticPression(); CalculateLeftAtrialPression(); CalculateLeftVentriculePression(); CalculateLeftVentriculeVolume(); });
+        phase.onValueChanged.AddListener(delegate { CheckPhase(); CalculateLeftAtrialPression(); CalculateLeftVentriculePression(); CalculateLeftVentriculeVolume(); });
+        aorticPression_Max.onValueChanged.AddListener(delegate { CalculateAorticPression(); });
 
         CalculateBodySurface();
         CalculateCardiacSpent();
         CalculateCardiacIndex();
+        CalculateAorticPression();
     }
 
     #region Alerts
@@ -234,6 +238,30 @@ public class UIManager : SinglentonParent<UIManager>
     {
         float IC = UtilFormulas.CardiacIndex(float.Parse(cardiacOutput.text), float.Parse(bodySurface.text));
         cardiacIndex.text = IC.ToString();
+    }
+
+    void CalculateAorticPression()
+    {
+        float AP = UtilFormulas.AorticPression(aorticPression_Max.value, FCM.value);
+        aorticPression.text = AP.ToString();
+    }
+
+    void CalculateLeftVentriculePression()
+    {
+        float LVP = UtilFormulas.LeftVentriculePression(ventricularFinalPression.maxValue, FCM.value);
+        ventricularFinalPression.value = LVP;
+    }
+
+    void CalculateLeftAtrialPression()
+    {
+        float LAP = UtilFormulas.LeftAtrialPression(atrialPression.maxValue, FCM.value);
+        atrialPression.value = LAP;
+    }
+
+    void CalculateLeftVentriculeVolume()
+    {
+        float LVV = UtilFormulas.LeftVentriculePression(ventricularVolume.maxValue, FCM.value);
+        ventricularVolume.value = LVV;
     }
     #endregion
 }

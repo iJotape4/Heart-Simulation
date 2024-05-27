@@ -42,4 +42,33 @@ public class UtilFormulas
         float IC = cardiacSpent / bodySurface;
         return IC;
     }
+
+    public static float AorticPression(float maxPression, float cardiacFrequency)
+    {
+        float cycle =  cardiacFrequency /60f;
+        float aorticPression = 80f + maxPression * (Mathf.Sin(2* Mathf.PI*cycle - (Mathf.PI/4)));
+        return aorticPression;
+    }
+
+    public static float LeftVentriculePression(float maxPression, float cardiacFrequency)
+    {
+        float cycle = cardiacFrequency / 60f;
+        float leftVentriculePression = maxPression * Mathf.Sin(2 * Mathf.PI * cycle);
+     
+        return leftVentriculePression<0 ? 0 : leftVentriculePression;
+    }
+
+    public static float LeftAtrialPression(float maxPression, float cardiacFrequency)
+    {
+        float cycle = cardiacFrequency / 60f;
+        float leftAtrialPression = 10 + maxPression * Mathf.Sin(2 * Mathf.PI * cycle - (Mathf.PI / 4));
+        return leftAtrialPression;
+    }
+
+    public static float LeftVentriculeVolume(float maxVolume, float cardiacFrequency)
+    {
+        float cycle = cardiacFrequency / 60f;
+        float leftVentriculeVolume = maxVolume - 60 * (Mathf.Sin(2 * Mathf.PI * cycle));
+        return leftVentriculeVolume < 0 ? 0 : leftVentriculeVolume;
+    }
 }
