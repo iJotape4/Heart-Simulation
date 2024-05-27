@@ -13,7 +13,7 @@ public class UIManager : SinglentonParent<UIManager>
     public Slider weight;
     public Slider FCM;
     public Toggle cardiacIllnessHistory;
-    public Slider aorticPression_Max;
+    public float aorticPression_Max =60f;
 
     [Header("Alerts")]
     public GameObject alertElder;
@@ -44,7 +44,6 @@ public class UIManager : SinglentonParent<UIManager>
         cardiacIllnessHistory.onValueChanged.AddListener(delegate { CheckCardiacIllnessAlert(); });
         FCM.onValueChanged.AddListener(delegate { CalculateCardiacSpent(); CalculateCardiacIndex(); CalculateAorticPression(); CalculateLeftAtrialPression(); CalculateLeftVentriculePression(); CalculateLeftVentriculeVolume(); });
         phase.onValueChanged.AddListener(delegate { CheckPhase(); CalculateLeftAtrialPression(); CalculateLeftVentriculePression(); CalculateLeftVentriculeVolume(); });
-        aorticPression_Max.onValueChanged.AddListener(delegate { CalculateAorticPression(); });
 
         CalculateBodySurface();
         CalculateCardiacSpent();
@@ -242,7 +241,7 @@ public class UIManager : SinglentonParent<UIManager>
 
     void CalculateAorticPression()
     {
-        float AP = UtilFormulas.AorticPression(aorticPression_Max.value, FCM.value);
+        float AP = UtilFormulas.AorticPression(aorticPression_Max, FCM.value);
         aorticPression.text = AP.ToString();
     }
 

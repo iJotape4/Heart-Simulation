@@ -10,6 +10,6 @@ public class FCMSlider : MonoBehaviour
     {
         age = UIManager.Instance.age;
         FCM = GetComponent<Slider>();
-        age.onValueChanged.AddListener(delegate { FCM.maxValue = (220 - age.value); });
+        //age.onValueChanged.AddListener(delegate { FCM.maxValue = (220 - age.value); });
     }
 }

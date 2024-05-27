@@ -47,7 +47,7 @@ public class UtilFormulas
     {
         float cycle =  cardiacFrequency /60f;
         float aorticPression = 80f + maxPression * (Mathf.Sin(2* Mathf.PI*cycle - (Mathf.PI/4)));
-        return aorticPression;
+        return aorticPression -10f;
     }
 
     public static float LeftVentriculePression(float maxPression, float cardiacFrequency)
